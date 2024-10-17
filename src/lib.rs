@@ -2,10 +2,7 @@ pub mod document;
 pub mod marks;
 pub mod nodes;
 
-pub use marks::*;
-pub use nodes::*;
-
-pub use chrono_tz::{Tz, UTC};
+pub use chrono_tz::*;
 use std::cell::RefCell;
 
 thread_local! {
