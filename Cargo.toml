@@ -12,7 +12,7 @@ repository = "https://github.com/romalexdoo/adf2html.git"
 
 license = "MIT"
 
-keywords = ["ADF", "Atlassian Document Format"]
+keywords = ["ADF", "Atlassian", "Jira"]
 
 [dependencies]
 chrono = { version = "0.4.38", features = ["serde"] }
