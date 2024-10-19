@@ -34,4 +34,13 @@ impl TableRow {
 
         html
     }
+
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            match content {
+                Content::TableHeader(cell) => cell.replace_media_urls(urls),
+                Content::TableCell(cell) => cell.replace_media_urls(urls),
+            }
+        }        
+    }
 }

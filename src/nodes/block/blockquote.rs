@@ -49,3 +49,24 @@ impl ToHtml for Content {
         }
     }
 }
+
+impl Blockquote {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}
+
+impl Content {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        match self {
+            Content::BulletList(bullet_list) => bullet_list.replace_media_urls(urls),
+            Content::CodeBlock(_code_block) => (),
+            Content::MediaGroup(media_group) => media_group.replace_media_urls(urls),
+            Content::MediaSingle(media_single) => media_single.replace_media_urls(urls),
+            Content::OrderedList(ordered_list) => ordered_list.replace_media_urls(urls),
+            Content::Paragraph(_paragraph) => (),
+        }
+    }
+}

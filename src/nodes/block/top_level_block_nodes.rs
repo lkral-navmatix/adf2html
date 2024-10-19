@@ -48,3 +48,22 @@ impl ToHtml for TopLevelBlockNode {
         }
     }
 }
+
+impl TopLevelBlockNode {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        match self {
+            TopLevelBlockNode::Blockquote(blockquote) => blockquote.replace_media_urls(urls),
+            TopLevelBlockNode::BulletList(bullet_list) => bullet_list.replace_media_urls(urls),
+            TopLevelBlockNode::CodeBlock(_code_block) => (),
+            TopLevelBlockNode::Expand(expand) => expand.replace_media_urls(urls),
+            TopLevelBlockNode::Heading(_heading) => (),
+            TopLevelBlockNode::MediaGroup(media_group) => media_group.replace_media_urls(urls),
+            TopLevelBlockNode::MediaSingle(media_single) => media_single.replace_media_urls(urls),
+            TopLevelBlockNode::OrderedList(ordered_list) => ordered_list.replace_media_urls(urls),
+            TopLevelBlockNode::Panel(panel) => panel.replace_media_urls(urls),
+            TopLevelBlockNode::Paragraph(_paragraph) => (),
+            TopLevelBlockNode::Rule => (),
+            TopLevelBlockNode::Table(table) => table.replace_media_urls(urls),
+        }
+    }
+}

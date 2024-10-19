@@ -78,3 +78,11 @@ impl ToHtml for Table {
         format!("<table{style}>{content}</table>")
     }
 }
+
+impl Table {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}

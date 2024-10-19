@@ -65,6 +65,14 @@ impl ToHtml for Expand {
     }
 }
 
+impl Expand {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}
+
 pub(crate) fn expand_html_formatting(title: String, content: String) -> String {
     let arrow_id = Uuid::new_v4().to_string();
     let expandable_content_id = Uuid::new_v4().to_string();
@@ -109,6 +117,25 @@ impl ToHtml for Content {
             Content::Rule => String::from("<hr/>"),
             Content::Table(table) => table.to_html(),
             Content::NestedExpand(nested_expand) => nested_expand.to_html(),
+        }
+    }
+}
+
+impl Content {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        match self {
+            Content::Blockquote(blockquote) => blockquote.replace_media_urls(urls),
+            Content::BulletList(bullet_list) => bullet_list.replace_media_urls(urls),
+            Content::CodeBlock(_code_block) => (),
+            Content::Heading(_heading) => (),
+            Content::MediaGroup(media_group) => media_group.replace_media_urls(urls),
+            Content::MediaSingle(media_single) => media_single.replace_media_urls(urls),
+            Content::OrderedList(ordered_list) => ordered_list.replace_media_urls(urls),
+            Content::Panel(panel) => panel.replace_media_urls(urls),
+            Content::Paragraph(_paragraph) => (),
+            Content::Rule => (),
+            Content::Table(table) => table.replace_media_urls(urls),
+            Content::NestedExpand(nested_expand) => nested_expand.replace_media_urls(urls),
         }
     }
 }

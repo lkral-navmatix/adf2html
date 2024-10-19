@@ -19,3 +19,11 @@ impl ToHtml for BulletList {
         format!(r#"<ul style = "padding: 4px;">{html}</ul>"#)
     }
 }
+
+impl BulletList {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}

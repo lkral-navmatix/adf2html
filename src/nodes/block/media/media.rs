@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    marks::link::Link,
+    marks::link::{Attributes as LinkAttributes, Link},
     ToHtml,
 };
 
@@ -50,5 +50,43 @@ impl ToHtml for Media {
         }
 
         html
+    }
+}
+
+impl Media {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        if urls.is_empty() {
+            return;
+        }
+
+        if matches!(self.attributes.kind, Kind::File) {
+            self.attributes.kind = Kind::Link;
+
+            if let Some(marks) = &self.marks {
+                if marks.iter().any(|m| matches!(m, Mark::Link(_))) {
+                    return;
+                }
+            }
+
+            if let Some(url) = urls.pop() {
+                let link_attributes = LinkAttributes {
+                    href: url,
+                    collection: None,
+                    id: None,
+                    occurrence_key: None,
+                    title: None,
+                };
+
+                let link = Link {
+                    attributes: link_attributes,
+                };
+
+                let mark = Mark::Link(link);
+
+                self.marks
+                    .get_or_insert_with(Vec::new)
+                    .push(mark);
+            }
+        }
     }
 }

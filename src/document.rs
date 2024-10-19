@@ -1,3 +1,4 @@
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -29,5 +30,20 @@ impl Document {
         }
 
         html
+    }
+
+    pub fn replace_media_urls(&mut self, api_domain_name: &String, html_rendered: &String) {
+        let regex = Regex::new(r#"/rest/api/3/attachment/content/\d+"#).unwrap();
+
+        let mut urls: Vec<String> = regex
+            .find_iter(html_rendered)
+            .map(|mat| format!("{}{}", api_domain_name, mat.as_str()))
+            .collect();
+
+        urls.reverse();
+
+        for node in self.content.iter_mut() {
+            node.replace_media_urls(&mut urls);
+        }
     }
 }

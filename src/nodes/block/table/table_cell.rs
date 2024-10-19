@@ -90,6 +90,12 @@ impl TableCell {
 
         format!("{col_widths}<{tag}{tag_attributes}>{content}</{tag}>")
     }
+
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
 }
 
 impl ToHtml for Content {
@@ -106,5 +112,22 @@ impl ToHtml for Content {
             Content::Rule => String::from("<hr/>"),
             Content::NestedExpand(nested_expand) => nested_expand.to_html(),
         }
+    }
+}
+
+impl Content {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        match self {
+            Content::Blockquote(blockquote) => blockquote.replace_media_urls(urls),
+            Content::BulletList(bullet_list) => bullet_list.replace_media_urls(urls),
+            Content::CodeBlock(_code_block) => (),
+            Content::Heading(_heading) => (),
+            Content::MediaGroup(media_group) => media_group.replace_media_urls(urls),
+            Content::OrderedList(ordered_list) => ordered_list.replace_media_urls(urls),
+            Content::Panel(panel) => panel.replace_media_urls(urls),
+            Content::Paragraph(_paragraph) => (),
+            Content::Rule => (),
+            Content::NestedExpand(nested_expand) => nested_expand.replace_media_urls(urls),
+    }
     }
 }

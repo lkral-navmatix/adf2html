@@ -47,3 +47,23 @@ impl ToHtml for ListItem {
         content
     }
 }
+
+impl ListItem {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}
+
+impl Content {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        match self {
+            Content::BulletList(bullet_list) => bullet_list.replace_media_urls(urls),
+            Content::CodeBlock(_code_block) => (),
+            Content::MediaSingle(media_single) => media_single.replace_media_urls(urls),
+            Content::OrderedList(ordered_list) => ordered_list.replace_media_urls(urls),
+            Content::Paragraph(_paragraph) => (),
+    }
+    }
+}

@@ -16,3 +16,11 @@ impl ToHtml for MediaGroup {
             .collect()
     }
 }
+
+impl MediaGroup {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}

@@ -55,3 +55,22 @@ impl ToHtml for Content {
         }
     }
 }
+
+impl NestedExpand {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        for content in self.content.iter_mut() {
+            content.replace_media_urls(urls);
+        }        
+    }
+}
+
+impl Content {
+    pub(crate) fn replace_media_urls(&mut self, urls: &mut Vec<String>) {
+        match self {
+            Content::Heading(_heading) => (),
+            Content::MediaGroup(media_group) => media_group.replace_media_urls(urls),
+            Content::MediaSingle(media_single) => media_single.replace_media_urls(urls),
+            Content::Paragraph(_paragraph) => (),
+        }
+    }
+}
