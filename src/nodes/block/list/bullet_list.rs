@@ -16,7 +16,7 @@ impl ToHtml for BulletList {
             .map(|item| item.to_html())
             .collect::<String>();
 
-        format!(r#"<ul style = "padding: 4px;">{html}</ul>"#)
+        format!(r#"<div style = "padding: 4px;"><ul>{html}</ul></div>"#)
     }
 }
 

@@ -24,7 +24,7 @@ impl ToHtml for OrderedList {
             .map(|item| item.to_html())
             .collect::<String>();
 
-        format!(r#"<ol style = "padding: 4px;">{html}</ol>"#)
+        format!(r#"<div style = "padding: 4px;"><ol>{html}</ol></div>"#)
     }
 }
 
