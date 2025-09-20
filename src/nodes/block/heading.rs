@@ -1,9 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    nodes::inline::inline_node::InlineNode, 
-    ToHtml
-};
+use crate::nodes::inline::inline_node::InlineNode;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -20,8 +17,8 @@ pub struct Attributes {
     pub local_id: Option<String>,
 }
 
-impl ToHtml for Heading {
-    fn to_html(&self) -> String {
+impl Heading {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         let tag = format!("h{}", self.attributes.level);
         let id = self.attributes.local_id.as_ref().map(|id| format!(" id = {id}")).unwrap_or_default();
 
@@ -30,7 +27,7 @@ impl ToHtml for Heading {
         if let Some(content) = &self.content {
             html = content
                 .iter()
-                .map(|n| n.to_html())
+                .map(|n| n.to_html(issue_or_comment_link))
                 .collect();
         }
 

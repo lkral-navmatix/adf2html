@@ -33,25 +33,25 @@ pub enum Content {
     Paragraph(Paragraph),
 }
 
-impl ToHtml for NestedExpand {
-    fn to_html(&self) -> String {
+impl NestedExpand {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         let title = self.attributes.title.clone().unwrap_or_default();
         let content = self.content
             .iter()
-            .map(|n| n.to_html())
+            .map(|n| n.to_html(issue_or_comment_link))
             .collect::<String>();
 
         expand_html_formatting(title, content)
     }
 }
 
-impl ToHtml for Content {
-    fn to_html(&self) -> String {
+impl Content {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         match self {
-            Content::Heading(heading) => heading.to_html(),
+            Content::Heading(heading) => heading.to_html(issue_or_comment_link),
             Content::MediaGroup(media_group) => media_group.to_html(),
             Content::MediaSingle(media_single) => media_single.to_html(),
-            Content::Paragraph(paragraph) => paragraph.to_html(),
+            Content::Paragraph(paragraph) => paragraph.to_html(issue_or_comment_link),
         }
     }
 }

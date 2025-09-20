@@ -53,12 +53,12 @@ pub enum Content {
     NestedExpand(NestedExpand),
 }
 
-impl ToHtml for Expand {
-    fn to_html(&self) -> String {
+impl Expand {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         let title = Text::new(self.attributes.title.clone(), self.marks.clone()).to_html();
         let content = self.content
             .iter()
-            .map(|n| n.to_html())
+            .map(|n| n.to_html(issue_or_comment_link))
             .collect::<String>();
 
         expand_html_formatting(title, content)
@@ -102,21 +102,21 @@ pub(crate) fn expand_html_formatting(title: String, content: String) -> String {
     )
 }
 
-impl ToHtml for Content {
-    fn to_html(&self) -> String {
+impl Content {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         match self {
-            Content::Blockquote(blockquote) => blockquote.to_html(),
-            Content::BulletList(bullet_list) => bullet_list.to_html(),
+            Content::Blockquote(blockquote) => blockquote.to_html(issue_or_comment_link),
+            Content::BulletList(bullet_list) => bullet_list.to_html(issue_or_comment_link),
             Content::CodeBlock(code_block) => code_block.to_html(),
-            Content::Heading(heading) => heading.to_html(),
+            Content::Heading(heading) => heading.to_html(issue_or_comment_link),
             Content::MediaGroup(media_group) => media_group.to_html(),
             Content::MediaSingle(media_single) => media_single.to_html(),
-            Content::OrderedList(ordered_list) => ordered_list.to_html(),
-            Content::Panel(panel) => panel.to_html(),
-            Content::Paragraph(paragraph) => paragraph.to_html(),
+            Content::OrderedList(ordered_list) => ordered_list.to_html(issue_or_comment_link),
+            Content::Panel(panel) => panel.to_html(issue_or_comment_link),
+            Content::Paragraph(paragraph) => paragraph.to_html(issue_or_comment_link),
             Content::Rule => String::from("<hr/>"),
-            Content::Table(table) => table.to_html(),
-            Content::NestedExpand(nested_expand) => nested_expand.to_html(),
+            Content::Table(table) => table.to_html(issue_or_comment_link),
+            Content::NestedExpand(nested_expand) => nested_expand.to_html(issue_or_comment_link),
         }
     }
 }

@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::ToHtml;
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InlineCard {
@@ -12,12 +10,20 @@ pub struct InlineCard {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Attributes {
+    pub id: Option<String>,
     pub data: Option<String>,
     pub url: Option<String>,
+    pub collection: Option<String>,
+    #[serde(rename = "type")]
+    pub type_field: Option<String>,
 }
 
-impl ToHtml for InlineCard {
-    fn to_html(&self) -> String {
-        format!(r#"<a style = "padding: 4px;" href = "{0}">{0}</a>"#, self.attributes.url.clone().unwrap_or_default())
+impl InlineCard {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
+        if let Some(url) = &self.attributes.url {
+            format!(r#"<a style = "padding: 4px;" href = "{0}">{0}</a>"#, url)
+        } else {
+            format!(r#"<a style = "padding: 4px;" href = "{0}">{0}</a>"#, issue_or_comment_link)
+        }
     }
 }

@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     nodes::block::top_level_block_nodes::TopLevelBlockNode, 
-    ToHtml,
     TIMEZONE
 };
 
@@ -16,7 +15,7 @@ pub struct Document {
 }
 
 impl Document {
-    pub fn to_html(&self, timezone: Option<chrono_tz::Tz>) -> String {
+    pub fn to_html(&self, timezone: Option<chrono_tz::Tz>, issue_or_comment_link: &String) -> String {
         if let Some(new_tz) = timezone {
             TIMEZONE.with(|tz| {
                 *tz.borrow_mut() = new_tz;
@@ -26,7 +25,7 @@ impl Document {
         let mut html = String::new();
 
         for node in &self.content {
-            html.push_str(&node.to_html());
+            html.push_str(&node.to_html(issue_or_comment_link));
         }
 
         html

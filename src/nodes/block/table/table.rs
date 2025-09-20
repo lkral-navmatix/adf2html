@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::ToHtml;
 use super::table_row::TableRow;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -34,8 +33,8 @@ pub enum DisplayMode {
     Fixed,
 }
 
-impl ToHtml for Table {
-    fn to_html(&self) -> String {
+impl Table {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         let mut style = String::from(r#"padding: 4px;"#);
         let mut is_number_column_enabled = false;
 
@@ -72,7 +71,7 @@ impl ToHtml for Table {
                 *num += 1;
             }
 
-            content.push_str(&row.to_html(row_number));
+            content.push_str(&row.to_html(row_number, issue_or_comment_link));
         }
         
         format!("<table{style}>{content}</table>")

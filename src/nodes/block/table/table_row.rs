@@ -16,7 +16,7 @@ pub enum Content {
 }
 
 impl TableRow {
-    pub(crate) fn to_html(&self, row_number: Option<u32>) -> String {
+    pub(crate) fn to_html(&self, row_number: Option<u32>, issue_or_comment_link: &String) -> String {
         let mut html = String::from("<tr>");
 
         if let Some(i) = row_number {
@@ -25,8 +25,8 @@ impl TableRow {
 
         for cell in &self.content {
             match cell {
-                Content::TableHeader(table_cell) => html.push_str(&table_cell.to_html(true)),
-                Content::TableCell(table_cell) => html.push_str(&table_cell.to_html(false)),
+                Content::TableHeader(table_cell) => html.push_str(&table_cell.to_html(true, issue_or_comment_link)),
+                Content::TableCell(table_cell) => html.push_str(&table_cell.to_html(false, issue_or_comment_link)),
             };
         }
 

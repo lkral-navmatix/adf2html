@@ -30,21 +30,21 @@ pub enum TopLevelBlockNode {
     Table(Table),
 }
 
-impl ToHtml for TopLevelBlockNode {
-    fn to_html(&self) -> String {
+impl TopLevelBlockNode {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         match self {
-            TopLevelBlockNode::Blockquote(blockquote) => blockquote.to_html(),
-            TopLevelBlockNode::BulletList(bullet_list) => bullet_list.to_html(),
+            TopLevelBlockNode::Blockquote(blockquote) => blockquote.to_html(issue_or_comment_link),
+            TopLevelBlockNode::BulletList(bullet_list) => bullet_list.to_html(issue_or_comment_link),
             TopLevelBlockNode::CodeBlock(code_block) => code_block.to_html(),
-            TopLevelBlockNode::Expand(expand) => expand.to_html(),
-            TopLevelBlockNode::Heading(heading) => heading.to_html(),
+            TopLevelBlockNode::Expand(expand) => expand.to_html(issue_or_comment_link),
+            TopLevelBlockNode::Heading(heading) => heading.to_html(issue_or_comment_link),
             TopLevelBlockNode::MediaGroup(media_group) => media_group.to_html(),
             TopLevelBlockNode::MediaSingle(media_single) => media_single.to_html(),
-            TopLevelBlockNode::OrderedList(ordered_list) => ordered_list.to_html(),
-            TopLevelBlockNode::Panel(panel) => panel.to_html(),
-            TopLevelBlockNode::Paragraph(paragraph) => paragraph.to_html(),
+            TopLevelBlockNode::OrderedList(ordered_list) => ordered_list.to_html(issue_or_comment_link),
+            TopLevelBlockNode::Panel(panel) => panel.to_html(issue_or_comment_link),
+            TopLevelBlockNode::Paragraph(paragraph) => paragraph.to_html(issue_or_comment_link),
             TopLevelBlockNode::Rule => String::from("<hr/>"),
-            TopLevelBlockNode::Table(table) => table.to_html(),
+            TopLevelBlockNode::Table(table) => table.to_html(issue_or_comment_link),
         }
     }
 }

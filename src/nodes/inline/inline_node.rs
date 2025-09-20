@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::ToHtml;
+
 use super::{
     date::Date, 
     emoji::Emoji, 
@@ -22,13 +23,13 @@ pub enum InlineNode {
     Text(Text),
 }
 
-impl ToHtml for InlineNode {
-    fn to_html(&self) -> String {
+impl InlineNode {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         match self {
             InlineNode::Date(date) => date.to_html(),
             InlineNode::Emoji(emoji) => emoji.to_html(),
             InlineNode::HardBreak => String::from("<br/>"),
-            InlineNode::InlineCard(inline_card) => inline_card.to_html(),
+            InlineNode::InlineCard(inline_card) => inline_card.to_html(issue_or_comment_link),
             InlineNode::Mention(mention) => mention.to_html(),
             InlineNode::Status(status) => status.to_html(),
             InlineNode::Text(text) => text.to_html(),

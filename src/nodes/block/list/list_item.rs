@@ -28,17 +28,17 @@ pub enum Content {
     Paragraph(Paragraph),
 }
 
-impl ToHtml for ListItem {
-    fn to_html(&self) -> String {
+impl ListItem {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         let mut content = String::new();
 
         for node in &self.content {
             let html = match node {
-                Content::BulletList(bullet_list) => bullet_list.to_html(),
+                Content::BulletList(bullet_list) => bullet_list.to_html(issue_or_comment_link),
                 Content::CodeBlock(code_block) => format!("<li>{}</li>", code_block.to_html()),
                 Content::MediaSingle(media_single) => format!("<li>{}</li>", media_single.to_html()),
-                Content::OrderedList(ordered_list) => ordered_list.to_html(),
-                Content::Paragraph(paragraph) => format!("<li>{}</li>", paragraph.to_html()),
+                Content::OrderedList(ordered_list) => ordered_list.to_html(issue_or_comment_link),
+                Content::Paragraph(paragraph) => format!("<li>{}</li>", paragraph.to_html(issue_or_comment_link)),
             };
 
             content.push_str(&html);

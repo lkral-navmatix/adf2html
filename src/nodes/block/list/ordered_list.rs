@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-use crate::ToHtml;
 use super::list_item::ListItem;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -17,11 +16,11 @@ pub struct Attributes {
     pub order: Option<u32>,
 }
 
-impl ToHtml for OrderedList {
-    fn to_html(&self) -> String {
+impl OrderedList {
+    pub fn to_html(&self, issue_or_comment_link: &String) -> String {
         let html = self.content
             .iter()
-            .map(|item| item.to_html())
+            .map(|item| item.to_html(issue_or_comment_link))
             .collect::<String>();
 
         format!(r#"<div style = "padding: 4px;"><ol>{html}</ol></div>"#)
