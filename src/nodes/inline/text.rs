@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    marks::mark::{Mark, MarkVecToHtml as _}, 
-    ToHtml
+    ToHtml,
+    marks::mark::{Mark, MarkVecToHtml as _},
 };
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -33,8 +33,9 @@ impl ToHtml for Text {
             }
         }
 
-        style.push_str("padding: 4px;");
-
-        format!(r#"<{tag} {tag_a_attributes} style = "{style}">{}</{tag}>"#, self.text)
+        format!(
+            r#"<{tag} {tag_a_attributes} style = "{style}">{}</{tag}>"#,
+            self.text
+        )
     }
 }
